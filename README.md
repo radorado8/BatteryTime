@@ -11,7 +11,7 @@ Natívna macOS aplikácia v hornom paneli, napísaná v Swifte bez externých z�
 
 ## Inštalácia na iný MacBook
 
-1. Otvor [najnovší release](https://github.com/radorado8/BatteryTime/releases/latest) a stiahni súbor `BatteryTime-v0.5.3-universal.zip` v sekcii Assets.
+1. Otvor [najnovší release](https://github.com/radorado8/BatteryTime/releases/latest) a stiahni súbor `BatteryTime-v0.5.4-universal.zip` v sekcii Assets.
 2. Rozbaľ ZIP a presuň `BatteryTime.app` do priečinka **Applications / Aplikácie**.
 3. Spusti aplikáciu. Údaje sa zobrazia v hornom paneli; aplikácia nemá ikonu v Docku.
 4. V Nastavenia… môžeš zapnúť automatické spúšťanie po prihlásení.

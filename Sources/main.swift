@@ -220,6 +220,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
         alert.messageText = "Čas obrazovky a výdrž batérie"
+        if let iconURL = Bundle.main.url(forResource: "AppIcon", withExtension: "icns"),
+           let icon = NSImage(contentsOf: iconURL) {
+            alert.icon = icon
+        }
         alert.informativeText = "▣ = čas zapnutej obrazovky od posledného odpojenia nabíjačky podľa pmset, rovnako ako battery_time.sh. Po pripojení ďalej pribúda; ďalšie odpojenie začne nové meranie. Nie je to systémový Čas pred obrazovkou.\n\n⚡ = zostávajúca výdrž podľa macOS. AC znamená napájanie zo siete, … znamená, že odhad ešte nie je dostupný.\n\nHistória môže byť neúplná po vymazaní systémových záznamov. Aplikácia nič neposiela na internet."
         alert.runModal()
     }

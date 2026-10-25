@@ -141,7 +141,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             row.isEnabled = false
             menu.addItem(row)
         }
-        label("BatteryTime")
         let total = TimeBreakdown(screen: reading?.screen?.seconds, remaining: reading?.remaining)
         label("Celkový čas: \(total.map { duration($0.total) } ?? "—")")
         label("Čas obrazovky: \(reading?.screen.map { duration($0.seconds) } ?? "—")")

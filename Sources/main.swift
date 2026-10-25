@@ -59,7 +59,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var timer: Timer?
     private var busy = false
     private var reading: Reading?
-    private var refreshed: Date?
     private var observers: [NSObjectProtocol] = []
     private var displayMode: DisplayMode {
         DisplayMode(rawValue: UserDefaults.standard.string(forKey: "displayMode") ?? "") ?? .both
@@ -99,7 +98,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.reading = result
-                self.refreshed = Date()
                 self.busy = false
                 self.updateStatus()
                 self.rebuildMenu()
@@ -144,13 +142,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(row)
         }
         label("BatteryTime")
-        label("Obrazovka: \(reading?.screen.map { duration($0.seconds) } ?? "bez dostupného záznamu")")
-        if let start = reading?.screen?.start {
-            label("Od odpojenia: \(start.formatted(date: .numeric, time: .shortened))")
-        }
-        label(reading?.detail ?? "Načítavam údaje…")
+        let total = TimeBreakdown(screen: reading?.screen?.seconds, remaining: reading?.remaining)
+        label("Celkový čas: \(total.map { duration($0.total) } ?? "—")")
+        label("Čas obrazovky: \(reading?.screen.map { duration($0.seconds) } ?? "—")")
+        let remaining = reading?.remaining.map { duration($0) }
+            ?? (reading?.battery == "AC" ? "napájanie zo siete" : "odhad nie je dostupný")
+        label("Zostávajúci čas: \(reading == nil ? "načítavam…" : remaining)")
         if let error = reading?.error { label(error) }
-        if let refreshed { label("Obnovené: \(refreshed.formatted(date: .omitted, time: .standard))") }
         menu.addItem(.separator())
         let refreshItem = menu.addItem(withTitle: busy ? "Obnovujem…" : "Obnoviť teraz", action: #selector(refresh), keyEquivalent: "r")
         refreshItem.target = self

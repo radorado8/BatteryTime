@@ -11,7 +11,7 @@ Natívna macOS aplikácia v hornom paneli, napísaná v Swifte bez externých z�
 
 ## Inštalácia na iný MacBook
 
-1. Otvor [najnovší release](https://github.com/radorado8/BatteryTime/releases/latest) a stiahni súbor `BatteryTime-v0.5.1-universal.zip` v sekcii Assets.
+1. Otvor [najnovší release](https://github.com/radorado8/BatteryTime/releases/latest) a stiahni súbor `BatteryTime-v0.5.2-universal.zip` v sekcii Assets.
 2. Rozbaľ ZIP a presuň `BatteryTime.app` do priečinka **Applications / Aplikácie**.
 3. Spusti aplikáciu. Údaje sa zobrazia v hornom paneli; aplikácia nemá ikonu v Docku.
 4. V Nastavenia… môžeš zapnúť automatické spúšťanie po prihlásení.
@@ -76,3 +76,5 @@ V Nastavenia… → Zobrazenie v hornom paneli vyber:
 Vo všetkých režimoch s celkovým časom je pod ním farebná čiara. `Σ` označuje celkový čas, `▣` čas obrazovky a `⚡` zostávajúci čas.
 
 Súčet je čas obrazovky od posledného odpojenia + aktuálny odhad zostávajúcej výdrže, nie garantovaná celková výdrž. Pri chýbajúcom údaji alebo napájaní zo siete sa zobrazí `Σ —` a sivá čiara. Voľba režimu sa ukladá a prejaví sa hneď po Uložiť. Podrobnosti oboch časov sú stále dostupné v menu a pri podržaní kurzora nad položkou panela.
+
+Menu po kliknutí vždy zobrazuje celkový čas, čas obrazovky a zostávajúci čas, bez percent batérie, dátumu odpojenia alebo času posledného obnovenia.

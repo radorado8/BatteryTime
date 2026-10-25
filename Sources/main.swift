@@ -166,33 +166,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
         alert.messageText = "Nastavenia BatteryTime"
-        alert.informativeText = "Obnovovať každých koľko minút? Zadaj celé číslo od 1 do 120. Nastavenie sa uloží aj po reštarte aplikácie."
-        let input = NSTextField(string: String(Int(interval)))
-        input.frame = NSRect(x: 0, y: 0, width: 280, height: 26)
-        let launchAtLogin = NSButton(checkboxWithTitle: "Spustiť po prihlásení do macOS", target: nil, action: nil)
-        launchAtLogin.state = SMAppService.mainApp.status == .enabled ? .on : .off
-        let statusLabel = NSTextField(wrappingLabelWithString: SMAppService.mainApp.status == .requiresApproval
-            ? "Automatické spúšťanie čaká na povolenie v nastaveniach macOS."
-            : "Platí aj po reštarte Macu.")
-        let systemSettings = NSButton(title: "Prihlasovacie položky macOS…", target: self, action: #selector(openLoginSettings))
-        let modeLabel = NSTextField(labelWithString: "Zobrazenie v hornom paneli:")
-        let modePicker = NSPopUpButton(frame: .zero, pullsDown: false)
-        modePicker.addItems(withTitles: DisplayMode.allCases.map(\.title))
-        modePicker.selectItem(at: DisplayMode.allCases.firstIndex(of: displayMode) ?? 2)
-        let explanation = NSTextField(wrappingLabelWithString: "Σ = celkový čas, ▣ = čas obrazovky, ⚡ = zostávajúci čas. Pod celkovým časom: červená = čas obrazovky, zelená = zostávajúca výdrž. Ak odhad chýba alebo je Mac na nabíjačke, súčet sa nezobrazí.")
-        explanation.font = .systemFont(ofSize: 11)
-        explanation.textColor = .secondaryLabelColor
-        let stack = NSStackView(views: [input, modeLabel, modePicker, explanation, launchAtLogin, statusLabel, systemSettings])
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 12
-        stack.frame = NSRect(x: 0, y: 0, width: 360, height: 290)
-        input.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        statusLabel.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        modePicker.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        explanation.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        stack.setFrameSize(NSSize(width: 360, height: stack.fittingSize.height))
-        alert.accessoryView = stack
+        alert.informativeText = "Vyber spôsob zobrazenia a správanie aplikácie. Zmeny sa použijú po uložení."
+        let form = SettingsForm(minutes: Int(interval), mode: displayMode,
+            loginEnabled: SMAppService.mainApp.status == .enabled,
+            needsApproval: SMAppService.mainApp.status == .requiresApproval,
+            target: self, settingsAction: #selector(openLoginSettings))
+        let input = form.intervalInput
+        let launchAtLogin = form.launchAtLogin
+        let modePicker = form.modePicker
+        alert.accessoryView = form
         alert.addButton(withTitle: "Uložiť")
         alert.addButton(withTitle: "Zrušiť")
         alert.window.initialFirstResponder = input

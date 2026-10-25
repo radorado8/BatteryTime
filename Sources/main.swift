@@ -123,13 +123,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .both:
             button.title = "▣ \(screen) · ⚡ \(remaining)"
             button.toolTip = "Čas obrazovky: \(screen) · zostáva: \(remaining)"
-        case .total:
+        case .total, .totalRemaining, .totalScreen, .all:
             let breakdown = TimeBreakdown(screen: reading?.screen?.seconds, remaining: reading?.remaining)
-            let text = breakdown.map { duration($0.total) } ?? "Σ —"
+            let text = breakdown.map { "Σ \(duration($0.total))" } ?? "Σ —"
             let image = totalStatusImage(text: text, breakdown: breakdown)
-            button.title = ""
+            button.title = displayMode.additionalTimes(screen: screen, remaining: remaining)
             button.image = image
-            button.imagePosition = .imageOnly
+            button.imagePosition = button.title.isEmpty ? .imageOnly : .imageLeading
             button.toolTip = breakdown.map { "Spolu: \(duration($0.total)) · červená: obrazovka \(screen) · zelená: zostáva \(remaining)" }
                 ?? "Súčet nie je dostupný · obrazovka: \(screen) · zostáva: \(remaining)"
         }
@@ -179,7 +179,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let modePicker = NSPopUpButton(frame: .zero, pullsDown: false)
         modePicker.addItems(withTitles: DisplayMode.allCases.map(\.title))
         modePicker.selectItem(at: DisplayMode.allCases.firstIndex(of: displayMode) ?? 2)
-        let explanation = NSTextField(wrappingLabelWithString: "Pri súčte: červená = čas obrazovky, zelená = zostávajúca výdrž. Ak odhad chýba alebo je Mac na nabíjačke, súčet sa nezobrazí.")
+        let explanation = NSTextField(wrappingLabelWithString: "Σ = celkový čas, ▣ = čas obrazovky, ⚡ = zostávajúci čas. Pod celkovým časom: červená = čas obrazovky, zelená = zostávajúca výdrž. Ak odhad chýba alebo je Mac na nabíjačke, súčet sa nezobrazí.")
         explanation.font = .systemFont(ofSize: 11)
         explanation.textColor = .secondaryLabelColor
         let stack = NSStackView(views: [input, modeLabel, modePicker, explanation, launchAtLogin, statusLabel, systemSettings])
